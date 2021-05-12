@@ -1,0 +1,6 @@
+Clone is the Loose file
+Custom is the stable / (Semi Playable) file
+CustomTest is the test and Beta Version 
+Index is the Main Menu
+
+shop does not work i need help with that

@@ -1,0 +1,165 @@
+<html>
+<head>
+<title> Custom Game </title>
+<script src="https://simplycodingcourses.com/files/simply.js"></script>
+<script>
+function start(){
+sjs.open("target",800,500);
+var background = new sjs.Image("Images/background.png");
+background.setSize(2500, 500);
+
+//Player Properties below here
+
+var r_facing = true;
+var g_canuse = false;
+var barriers = false;
+var canShoot = false;
+var test = false;
+
+var player = new sjs.Image("Images/l_gun_idle.png");
+player.type = "player";
+player.setSize(85,93);
+player.setGravity(3.);
+player.bottom();
+player.friction = .3;
+
+sjs.scrollable(player,background)
+
+sjs.keyDown(D_KEY, function(){
+player.setImage("Images/r_gun.gif");
+player.pushRight();
+r_facing = true;
+});
+
+sjs.keyDown(A_KEY, function(){
+player.setImage("Images/l_gun.gif");
+player.pushLeft();
+r_facing = false;
+});
+
+sjs.keyDown(W_KEY, function(){
+player.pushUp(15.75);
+});
+
+
+sjs.keyDown(T_KEY, function(){
+canShoot = true;
+});
+
+//gun?
+
+sjs.keyDown(S_KEY, function(){
+if(r_facing == true){
+var bullet = new sjs.Image("Images/bullet.png");
+var shell = new sjs.Image("Images/shell.png");
+shell.setGravity(9.807);
+shell.moveTo(player.getX()+52,player.getY()+33);
+shell.pushLeft(1.5);
+shell.pushUp(5.5);
+shell.friction = .2;
+bullet.setGravity(0.45);
+bullet.moveTo(player.getX()+75,player.getY()+33);
+bullet.pushRight(35.5);
+bullet.type = "test";
+} else {
+var bullet = new sjs.Image("Images/bullet.png");
+var shell = new sjs.Image("Images/shell.png");
+shell.setGravity(9.807);
+shell.moveTo(player.getX()+20,player.getY()+33);
+shell.pushRight(1.5);
+shell.pushUp(5.5);
+shell.friction = .2;
+bullet.setGravity(0.45);
+bullet.moveTo(player.getX()+0,player.getY()+33);
+bullet.pushLeft(35.5);
+bullet.type = "test";
+}
+});
+
+window.addEventListener("keyup", function(e){
+if(e.keyCode == D_KEY){
+player.setImage("Images/r_gun_idle.png");
+} else if (e.keyCode == A_KEY){
+player.setImage("Images/l_gun_idle.png");
+} //end if statement
+}); //end EventListener function
+
+var score = 0;
+var score_txt = new sjs.Text("Score: 0", 21, "green");
+score_txt.right().offset(-20, 0);
+score_txt.fixed = true;
+sjs.onHit("test","enemy", function(x,y){
+score = score + 1;
+score_txt.setText("Score :"+ score);
+localStorage.setItem("score", score);
+y.destroy();
+x.destroy();
+});
+
+//Barriers Shop items
+var shop = new sjs.Image("Images/o-shop.png");
+shop.type = "shop";
+shop.bottom().offset(1110, 50);
+shop.friction = 999.0;
+shop.setSize(170,186);
+
+
+
+//Enemies
+setInterval(function(){
+var speed = Math.round(1 + Math.random()*10);
+if(Math.random() > 0.5){
+var enemy = new sjs.Image("Images/r_zombie.gif");
+enemy.setGravity(3.);
+enemy.type = "enemy";
+enemy.setSize(85,93);
+enemy.noBounds = true;
+enemy.friction = 0;
+enemy.pushRight(speed);
+enemy.moveTo(-enemy.getWidth(), Math.random()*(enemy.getClamp().y));
+}else {
+var enemy = new sjs.Image("Images/l_zombie.gif");
+enemy.setGravity(3.);
+enemy.type = "enemy";
+enemy.setSize(85,93);
+enemy.noBounds = true;
+enemy.friction = 0;
+enemy.pushLeft(speed);
+enemy.moveTo(sjs.getWidth(), Math.random()*(enemy.getClamp().y));
+}
+},0750);
+
+
+
+sjs.onHit("test",["left_screen","right_screen"], function(x,y){
+sjs.bounceOff(x,y);
+});
+
+sjs.onHit("enemy","bottom_screen", function(x,y){
+sjs.stoppedBy(x,y);
+});
+
+sjs.onHit("enemy",["left_screen","right_screen"], function(x,y){
+sjs.bounceOff(x,y);
+});
+
+sjs.onHit("test","bottom_screen", function(x,y){
+x.destroy();
+y.destroy();
+});
+
+sjs.onHit("player","enemy", function(x,y){
+x.destroy();
+window.location = "Clone.html";
+});
+
+
+} //end start
+</script>
+</head>
+<body onload="start()">
+<h1> Custom Game </h1>
+
+<div id="target" style="margin:auto;background:grey;"></div>
+</body>
+</html>

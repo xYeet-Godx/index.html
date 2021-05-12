@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Game Over </title>
+<script src="https://simplycodingcourses.com/files/simplyjs/simply.js"></script>
+<script>
+function start(){
+sjs.open();
+
+//music
+var playM = new Audio('Music/FAIL.mp3');
+playM.play();
+
+var gameover_txt = new sjs.Text("Promise You Wont Do That Again", 44, "orange");
+gameover_txt.center().offset(0,-70)
+
+var restartBtn = new sjs.Button("Clone Yourself", function(){
+window.location = "index.html";
+});
+restartBtn.center();
+
+
+}
+</script>
+</head>
+<body onload="start()">
+<h1> Game Over </h1>
+
+<div id="target" style="margin:auto;background:grey;"></div>
+</body>
+</html>

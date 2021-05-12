@@ -1,0 +1,99 @@
+<html>
+<head>
+<title> Custom Game </title>
+<script src="https://simplycodingcourses.com/files/simply.js"></script>
+<script>
+function start(){
+sjs.open("target",700,400);
+var background = new sjs.Image("Images/ap.jpg");
+background.setSize(700, 400);
+
+
+
+//Player Properties below here
+
+
+var test = new sjs.Image("Images/gunn.png");
+test.type = "test";
+test.setSize(40,64);
+test.friction = .3
+test.center();
+
+sjs.keyDown(D_KEY, function(){
+test.pushRight();
+r_facing = true;
+});
+
+sjs.keyDown(A_KEY, function(){
+test.pushLeft();
+r_facing = false;
+});
+
+sjs.keyDown(W_KEY, function(){
+test.pushUp();
+});
+
+sjs.keyDown(S_KEY, function(){
+test.pushDown();
+});
+
+sjs.keyDown(G_KEY, function(){
+var thin = new sjs.Image("Images/water.png");
+thin.type = "water";
+thin.moveTo(test.getX()+0,test.getY()+0);
+thin.setGravity(4.9035);
+thin.friction = 0.0
+});
+
+sjs.keyDown(E_KEY, function(){
+var shell = new sjs.Image("Images/shell2.png");
+shell.type = "shell";
+shell.friction = 0.0
+shell.setSize(8,8);
+shell.setGravity(4.9035);
+shell.moveTo(test.getX()+0,test.getY()+0);
+shell.pushLeft(5.5);
+shell.pushUp(5.5);
+});
+
+
+
+//it
+var man = new sjs.Image("Images/unknown.png");
+man.center();
+man.setSize(128,128);
+
+//onhit codes
+
+sjs.onHit("test","shell", function(x,y){
+sjs.stoppedBy(x,y);
+});
+
+sjs.onHit("shell","bottom_screen", function(x,y){
+x.destroy();
+});
+
+sjs.onHit("water","water", function(x,y){
+sjs.stoppedBy(x,y);
+});
+
+sjs.onHit("water","test", function(x,y){
+sjs.bounceOff(x,y);
+});
+
+var startBtn = new sjs.Button("Survive", function(){
+window.location = "CustomTest.html";
+});
+startBtn.centerH();
+
+
+
+} //end start
+</script>
+</head>
+<body onload="start()">
+<h1> Custom Game </h1>
+
+<div id="target" style="margin:auto;background:grey;"></div>
+</body>
+</html>
